@@ -1,0 +1,182 @@
+.blogAdded {
+    color: green;
+    background: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: fixed;
+}
+
+.error {
+    color: red;
+    background: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: fixed;
+}
+
+.logout {
+    color: black;
+    font-style: italic;
+    background: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.blogForm input::placeholder {
+    font-style: italic;
+    /*font-family: 'Courier New', Courier, monospace;*/
+}
+
+/* TÄMÄ LÖYTYY Blog.js */
+/*
+.blogTitle span {
+    text-decoration: underline;
+    font-weight: bold;
+}
+*/
+
+.blogAuthor {
+    font-style: italic;
+    margin-right: 8px;
+}
+
+div:has(> div.opened) {
+    border-style: dotted !important;
+    border-radius: 15px;
+    margin-top: 5px;
+    /*background-color: aquamarine;*/
+}
+
+/* div.opened > div + div {
+    padding-left: 25px;
+    margin-top: 5px;
+} */
+
+/* likes, url */
+div.opened > div + div, .blogUrl   {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-left: 25px
+}
+
+/* div.opened > div > button {
+    /* padding-left: 0px !important; */
+/* } */
+
+/* has ei toimi oletuksena firefox */
+div:has(> button.removeButton) {
+    border-top-style: dashed;
+    border-color: gray;
+    border-width: 1px;
+    margin-top: 15px;
+    padding-top: 5px;
+    /* border-top-right-radius: 30px; */
+    /* width: 10%; */
+    padding-left: 5px;
+    /* background-color: aliceblue; */
+    /* -webkit-border-top-right-radius: 30px; */
+    margin-right:5px;
+}
+
+div.removeDiv {
+    border-top-style: dashed;
+    border-color: gray;
+    border-width: 1px;
+    margin-top: 15px;
+    padding-top: 5px;
+    /* border-top-right-radius: 30px; */
+    /* width: 10%; */
+    padding-left: 5px;
+    /* background-color: aliceblue; */
+    /* -webkit-border-top-right-radius: 30px; */
+    margin-right:5px;
+}
+
+
+div.blogBox {
+    padding-bottom: 10px !important;
+    transition: background-color 0.5s;
+}
+
+span.blogTitle:hover {
+    cursor: pointer;
+}
+
+div.blogBox:hover {
+    background-color: lightsteelblue;
+}
+
+/* div.opened {
+    background-color: lightsteelblue;
+} */
+/* div > div.opened {
+    background-color: lightgoldenrodyellow;
+    border-radius: 10px;
+    border-style: none;
+    margin-left: 20px;
+    margin-right: 10%;
+} */
+
+/* likebox */
+/* div.blogUrl + div {
+    background-color: lightgrey;
+    margin-left: 20px;
+    border-radius: 5px;
+    /* margin-right: 60%; */
+    /* padding-left: 0px;
+    padding-right: 5px; */
+/* } */ 
+/* div.opened > div.blogBox {
+    transition: background-color 0.5s;
+} */
+
+/* div.opened > div.blogBox:hover {
+    background-color: lightskyblue !important; 
+    background-color: red;
+} */
+
+/* like button */
+/* valitaan div.opened jälkeläisen div.blogUrl vain ensimmäinen sisarus
+josta valitaan button */
+
+div.opened > div.blogUrl + div > button {
+    margin-left: 13px;
+    /* joko margin-left  */
+       /* tai margin-left: 0px ja float right*/ 
+    /*margin-left: 0px;
+     float: right; */
+    /* padding: 0px 50px 0px 5px; */
+    /* /* transition: background-color 0s, padding 0.5s, font-size 0s, border-radius 0s;
+    transition-timing-function: ease-in-out;
+    transition-duration: 10ms; */
+}
+
+/*
+div.opened > div.blogUrl + div > button {
+    margin-left: 13px;
+    /* joko margin-left  */
+    /* tai margin-left: 0px ja float right*/ 
+    /*margin-left: 0px;
+     float: right; */
+    /* padding: 0px 50px 0px 5px; */
+    /* transition: background-color 0s, padding 0.5s, font-size 0s, border-radius 0s;
+    transition-timing-function: ease-in-out;
+    transition-duration: 10ms;
+}
+
+div.opened > div.blogUrl + div > button:active {
+    background-color: gold;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 50px;
+    border-style: none;
+} */
