@@ -1,0 +1,43 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Parsing Html The Cthulhu Way",
+    "author": "Jeff Atwood",
+    "url": "https://blog.codinghorror.com/parsing-html-the-cthulhu-way/",
+    "likes": 1234,
+    "userId": "6436a10e40980f329f08b00e"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Parsing Html The Cthulhu Way",
+    "author": "Jeff Atwood",
+    "url": "https://blog.codinghorror.com/parsing-html-the-cthulhu-way/",
+    "likes": 1234,
+    "userId": "dummyId"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Things I Don’t Know as of 2018",
+    "url": "https://overreacted.io/things-i-dont-know-as-of-2018/",
+    "author": "Dan Abramov"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Microservices and the First Law of Distributed Objects",
+    "url": "https://martinfowler.com/articles/distributed-objects-microservices.html",
+    "author": "Martin Fowler",
+    "userId": "6436a16f40980f329f08b010"
+}

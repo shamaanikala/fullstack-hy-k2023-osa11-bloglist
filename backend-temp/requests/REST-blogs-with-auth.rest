@@ -1,0 +1,44 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY0MzZhMTZmNDA5ODBmMzI5ZjA4YjAxMCIsImlhdCI6MTY4MTQ3NjM3Nn0.YXUGUXJP3fLA5yOVo4LWmXc5BdSXXfVuRiXhVT6uxlw
+
+{
+    "title": "Things I Don’t Know as of 2018",
+    "url": "https://overreacted.io/things-i-dont-know-as-of-2018/",
+    "author": "Dan Abramov"
+}
+
+###
+DELETE http://localhost:3003/api/blogs/64380320a8fd026e942c6425
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RhYWphIiwiaWQiOiI2NDM2YTEwZTQwOTgwZjMyOWYwOGIwMGUiLCJpYXQiOjE2ODE1NTYzNTF9.58VkJ7mYR6Nnwhh3TWPHlpX1HjVFoC1EOAmKc2fpjds
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY0MzZhMTZmNDA5ODBmMzI5ZjA4YjAxMCIsImlhdCI6MTY4MTU1OTg3Mn0.DCmSEVR00dV9UQ1K-RHo7wN9pP0TaH7ou8ff7e11DyI
+
+{
+    "title": "Things I Don’t Know as of 2018",
+    "url": "https://overreacted.io/things-i-dont-know-as-of-2018/",
+    "author": "Dan Abramov"
+}
+
+###
+DELETE http://localhost:3003/api/blogs/643afce627bb35378821f477
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY0MzZhMTZmNDA5ODBmMzI5ZjA4YjAxMCIsImlhdCI6MTY4MTU1OTg3Mn0.DCmSEVR00dV9UQ1K-RHo7wN9pP0TaH7ou8ff7e11DyI
+
+
+###
+DELETE http://localhost:3003/api/blogs/64380320a8fd026e942c6425
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY0MzZhMTZmNDA5ODBmMzI5ZjA4YjAxMCIsImlhdCI6MTY4MTU1OTg3Mn0.DCmSEVR00dV9UQ1K-RHo7wN9pP0TaH7ou8ff7e11DyI
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RhYWphIiwiaWQiOiI2NDM2YTEwZTQwOTgwZjMyOWYwOGIwMGUiLCJpYXQiOjE2ODE3MjgzODB9.6LCYH0ysPKJZZjhS7GwAVko03abZvLI_7sBSscExkmk
+
+{
+    "title": "Things I Don’t Know as of 2018",
+    "url": "https://overreacted.io/things-i-dont-know-as-of-2018/",
+    "author": "Dan Abramov"
+}

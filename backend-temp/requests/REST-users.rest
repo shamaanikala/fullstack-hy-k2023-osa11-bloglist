@@ -1,0 +1,116 @@
+GET http://localhost:3003/api/users
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "testaaja",
+  "name": "Testi Nimi",
+  "password": "salasana"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "root",
+  "name": "Ylläpitäjä",
+  "password": "salasana"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "lo",
+  "name": "Ylläpitäjä",
+  "password": "salasana"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "liian-lyhyt-salasana",
+  "name": "Ylläpitäjä",
+  "password": "lo"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "ei-salasanaa-tyhjä-mjono",
+  "name": "Ylläpitäjä",
+  "password": ""
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "",
+  "name": "Tyhjä Merkkijono Käyttäjänimenä",
+  "password": "salasana"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "ei-salasanaa",
+  "name": "Ylläpitäjä"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "Tyhjä-pw",
+  "name": "Tyhjä Merkkijono Salasanana",
+  "password": ""
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "",
+  "name": "Tyhjä Merkkijono Salasanana sekä käyttäjätunnuksena",
+  "password": ""
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "ab",
+  "name": "Lol",
+  "password": "d"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "mluukkai",
+  "name": "Matti Luukkainen",
+  "password": "salainen"
+}
