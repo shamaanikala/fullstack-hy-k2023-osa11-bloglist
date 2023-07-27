@@ -29,6 +29,15 @@ app.use('/api/login', loginRouter)
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
   app.use('/api/testing', testingRouter)
+
+  if (process.argv.includes('build')) {
+    console.log('Running test with production build frontend...')
+    app.use(express.static(path.join(__dirname, 'build')))
+
+    app.get('/', (req, res) => {
+      res.sendFile(path.join(__dirname, 'build', 'index.html'))
+    })
+  }
 }
 
 if (process.env.NODE_ENV === 'production') {

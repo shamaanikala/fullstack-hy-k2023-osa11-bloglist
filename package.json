@@ -10,6 +10,7 @@
     "test": "cross-env NODE_ENV=test jest tests/ --verbose --runInBand --env=node --bail=true --config=jest.config.json",
     "test:backend-file": "cross-env NODE_ENV=test jest --verbose --runInBand --env=node --bail=true --config=jest.config.json",
     "start:test-server": "cross-env NODE_ENV=test node index.js",
+    "start:test-build": "cross-env NODE_ENV=test node index.js build",
     "start:dev-front": "react-scripts start",
     "eslint": "eslint .",
     "test:react": "CI=true react-scripts test",
