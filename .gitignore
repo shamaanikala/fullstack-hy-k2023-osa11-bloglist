@@ -27,3 +27,4 @@ yarn-error.log*
 
 # cypress videot
 /cypress/videos
+/cypress/screenshots
