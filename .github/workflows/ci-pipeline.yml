@@ -35,3 +35,21 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  e2e_tests_on_build:
+    name: Tests and builds the Bloglist application
+    runs-on: ubuntu-22.04
+    needs: test_and_build_bloglist
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Run the built app with NODE_ENV=test
+        run: 'npm run start:test-build'
+      - name: E2E tests with Cypress
+        run: 'npm run test:e2e'
