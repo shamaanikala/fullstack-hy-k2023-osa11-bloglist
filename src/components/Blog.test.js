@@ -13,7 +13,7 @@ describe('kun blogista näytetään vain vähän tietoja', () => {
     render(<Blog blog={blog} />)
 
     const element = screen.getByText('Testiblogi')
-    expect(element).not.toBeDefined()
+    expect(element).toBeDefined()
   })
 
   test('blogista ei renderöidä url', () => {
