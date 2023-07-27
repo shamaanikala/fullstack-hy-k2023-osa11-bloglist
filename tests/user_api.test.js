@@ -10,7 +10,7 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
-    const passwordHash = await bcrypt.hash('salaisuus',10)
+    const passwordHash = await bcrypt.hash('salaisuus', 10)
     const user = new User({ username: 'testi-root', passwordHash })
 
     await user.save()
@@ -31,7 +31,9 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
       password: 'salainen',
     }
 
-    await api.post('/api/users').send(newUser)
+    await api
+      .post('/api/users')
+      .send(newUser)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -43,15 +45,15 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
   })
 
   test('uutta käyttäjää samalla nimellä ei voida luoda ja pyyntö palauttaa koodin 400', async () => {
-    const usersAtStart = await helper.usersInDb()
-
     const badNewUser = {
       username: 'testi-root',
       name: 'Tätä Ei Tarvitsisi',
       password: 'salasana',
     }
 
-    const result = await await api.post('/api/users').send(badNewUser)
+    await api
+      .post('/api/users')
+      .send(badNewUser)
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
@@ -68,7 +70,9 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
       password: 'salasana',
     }
 
-    const result = await api.post('/api/users').send(badNewUser)
+    const result = await api
+      .post('/api/users')
+      .send(badNewUser)
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
@@ -89,12 +93,16 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: 'salasana',
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
       //console.log(result.body.error)
-      expect(result.body.error).toContain(`Username must have at least 3 characters (given username was: '${badNewUser.username}')`)
+      expect(result.body.error).toContain(
+        `Username must have at least 3 characters (given username was: '${badNewUser.username}')`
+      )
 
       const usersAtEnd = await helper.usersInDb()
       expect(usersAtEnd).toHaveLength(usersAtStart.length)
@@ -109,12 +117,16 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: 's',
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
       //console.log(result.body.error)
-      expect(result.body.error).toContain('Password must have at least 3 characters')
+      expect(result.body.error).toContain(
+        'Password must have at least 3 characters'
+      )
 
       const usersAtEnd = await helper.usersInDb()
       expect(usersAtEnd).toHaveLength(usersAtStart.length)
@@ -129,7 +141,9 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: 'salasana',
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
@@ -149,7 +163,9 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: 'salasana',
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
@@ -169,7 +185,9 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: 'salasana',
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
@@ -189,7 +207,9 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: '',
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
@@ -209,7 +229,9 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: undefined,
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
@@ -229,7 +251,9 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: null,
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
@@ -249,18 +273,21 @@ describe('kun tietokannassa on jo yksi käyttäjä', () => {
         password: null,
       }
 
-      const result = await api.post('/api/users').send(badNewUser)
+      const result = await api
+        .post('/api/users')
+        .send(badNewUser)
         .expect(400)
         .expect('Content-Type', /application\/json/)
 
       //console.log(result.body.error)
-      expect(result.body.error).toContain('User creation failed: data missing for required `username`, `password`.')
+      expect(result.body.error).toContain(
+        'User creation failed: data missing for required `username`, `password`.'
+      )
 
       const usersAtEnd = await helper.usersInDb()
       expect(usersAtEnd).toHaveLength(usersAtStart.length)
     })
   })
-
 })
 
 afterAll(async () => {
