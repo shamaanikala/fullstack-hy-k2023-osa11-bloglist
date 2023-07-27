@@ -7,8 +7,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "cross-env NODE_ENV=test jest tests/ --verbose --runInBand --env=node --bail=true --config=non.jest.config.json",
-    "test:backend-file": "cross-env NODE_ENV=test jest --verbose --runInBand --env=node --bail=true --config=non.jest.config.json",
+    "test": "cross-env NODE_ENV=test jest tests/ --verbose --runInBand --env=node --bail=true --config=jest.config.json",
+    "test:backend-file": "cross-env NODE_ENV=test jest --verbose --runInBand --env=node --bail=true --config=jest.config.json",
     "start:test-server": "cross-env NODE_ENV=test node index.js",
     "start:dev-front": "react-scripts start",
     "eslint": "eslint .",
