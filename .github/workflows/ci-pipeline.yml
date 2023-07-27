@@ -1,0 +1,34 @@
+name: Bloglist CI/CD pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  COMMIT_BASE_URL: https://github.com/shamaanikala/fullstack-hy-k2023-osa11-bloglist/commit
+
+jobs:
+  test_and_build_pipeline:
+    name: Tests and builds the Bloglist application
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check style
+        run: npm run lint
+
+      - name: Test backend
+        run: npm test
+
+      - name: Test frontend
+        run: npm run test:react
+
+      - name: Build
+        run: npm run build
