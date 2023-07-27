@@ -21,17 +21,18 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Install dependencies
         run: npm install
-
-      - name: Check style
-        run: npm run eslint
 
       - name: Test backend
         run: npm test
 
       - name: Test frontend
         run: npm run test:react
+
+      - name: Check style
+        run: npm run eslint
 
       - name: Build
         run: npm run build
@@ -45,10 +46,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Install dependencies
         run: npm install
+
       - name: Build
         run: npm run build
+
       - name: E2E tests with Cypress
         uses: cypress-io/github-action@v5
         with:
