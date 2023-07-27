@@ -12,7 +12,27 @@ env:
   SECRET: ${{ secrets.SECRET }}
 
 jobs:
-  test_and_build_pipeline:
+  # Due to complications with Create React App and Jest
+  # I shall use this hack to test the backend separately
+  test_bloglist_backend:
+    name: Test backend
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Replace the package.json
+        run: |
+          mv package.json frontend.package.json
+          mv backend.package.json package.json
+      - name: Install dependencies
+        run: npm install
+      - name: Run Jest on backend files
+        run: npm test
+
+  test_and_build_bloglist:
     name: Tests and builds the Bloglist application
     runs-on: ubuntu-22.04
 
@@ -27,10 +47,10 @@ jobs:
       - name: Check style
         run: npm run eslint
 
-      - name: Test backend
-        #run: npm test # this step is succesful even if tests fail
-        #shell: bash # trying to fix the false success with this, does not work
-        run: 'npm run test:backend-file -- tests/login_api.test.js' # failing test
+      # - name: Test backend
+      #run: npm test # this step is succesful even if tests fail
+      #shell: bash # trying to fix the false success with this, does not work
+      # run: 'npm run test:backend-file -- tests/login_api.test.js' # failing test
 
       - name: Test frontend
         run: npm run test:react
