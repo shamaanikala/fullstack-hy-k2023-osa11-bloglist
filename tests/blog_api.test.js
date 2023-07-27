@@ -11,7 +11,6 @@ const jwt = require('jsonwebtoken')
 // auth testit:
 // https://github.com/ladjs/supertest/issues/398#issuecomment-814172046
 
-
 describe('Kun tietokannassa on vain alustusdataa', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
@@ -23,15 +22,18 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
     // uusi user
     await User.deleteMany({})
     const username = 'testi-root'
-    const passwordHash = await bcrypt.hash('salaisuus',10)
+    const passwordHash = await bcrypt.hash('salaisuus', 10)
 
     const user = new User({ username: username, passwordHash: passwordHash })
 
     await user.save()
 
     // toinen user
-    const passwordHash2 = await bcrypt.hash('salasana2',10)
-    const user2 = new User({ username: 'toinen-käyttäjä', passwordHash: passwordHash2 })
+    const passwordHash2 = await bcrypt.hash('salasana2', 10)
+    const user2 = new User({
+      username: 'toinen-käyttäjä',
+      passwordHash: passwordHash2,
+    })
     await user2.save()
 
     // login
@@ -54,7 +56,9 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
   })
 
   test('sovellus palauttaa oikean määrän JSON-muotoisia blogeja', async () => {
-    const response = await api.get('/api/blogs').expect('Content-Type', /application\/json/)
+    const response = await api
+      .get('/api/blogs')
+      .expect('Content-Type', /application\/json/)
 
     //expect(response.get('Content-Type')).toEqual(/application\/json/) // ei toimi
     expect(response.body).toHaveLength(helper.initialBlogs.length)
@@ -66,7 +70,6 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
     for (let i of ids) {
       expect(i).toBeDefined()
     }
-
   })
 
   describe('uuden blogin lisääminen POST-pyynnollä', () => {
@@ -75,7 +78,7 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
         title: 'Parsing Html The Cthulhu Way',
         author: 'Jeff Atwood',
         url: 'https://blog.codinghorror.com/parsing-html-the-cthulhu-way/',
-        likes: 1234
+        likes: 1234,
       }
 
       await api
@@ -91,11 +94,14 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
           title: 'Parsing Html The Cthulhu Way',
           author: 'Jeff Atwood',
           url: 'https://blog.codinghorror.com/parsing-html-the-cthulhu-way/',
-          likes: 1234
+          likes: 1234,
         }
 
         // kunnollisessa tokenissa on id eikä userId
-        const mockToken = jwt.sign({ username: 'testi-root', userId: 'abcd' }, process.env.SECRET)
+        const mockToken = jwt.sign(
+          { username: 'testi-root', userId: 'abcd' },
+          process.env.SECRET
+        )
 
         await api
           .post('/api/blogs')
@@ -108,8 +114,7 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
     describe('kirjautuneena ja kelvollisella tokenilla', () => {
       test('onnistuu ja se löytyy tietokannasta', async () => {
-
-        const loginResponse = await helper.login('testi-root','salaisuus')
+        const loginResponse = await helper.login('testi-root', 'salaisuus')
         //console.log(loginResponse.body.token)
         const token = loginResponse.body.token
 
@@ -117,7 +122,7 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
           title: 'Parsing Html The Cthulhu Way',
           author: 'Jeff Atwood',
           url: 'https://blog.codinghorror.com/parsing-html-the-cthulhu-way/',
-          likes: 1234
+          likes: 1234,
         }
 
         await api
@@ -137,7 +142,9 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
         expect(authors).toContain('Jeff Atwood')
 
         const urls = newBlogs.map(blog => blog.url)
-        expect(urls).toContain('https://blog.codinghorror.com/parsing-html-the-cthulhu-way/')
+        expect(urls).toContain(
+          'https://blog.codinghorror.com/parsing-html-the-cthulhu-way/'
+        )
       })
 
       test('onnistuu ja sen jäkeen blogeja löytyy tietokannasta yksi enemmän', async () => {
@@ -153,14 +160,14 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
           title: uniqueName,
           author: 'Jeff Atwood',
           url: 'https://blog.codinghorror.com/parsing-html-the-cthulhu-way/',
-          likes: 1234
+          likes: 1234,
         }
 
-        const loginResponse = await helper.login('testi-root','salaisuus')
+        const loginResponse = await helper.login('testi-root', 'salaisuus')
         const token = loginResponse.body.token
 
-
-        await api.post('/api/blogs')
+        await api
+          .post('/api/blogs')
           .auth(token, { type: 'bearer' }) // tässä pitää olla bearer pienellä
           .send(newBlog)
           .expect(201)
@@ -191,14 +198,14 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
           title: uniqueName,
           author: 'Jeff Atwood',
           url: 'https://blog.codinghorror.com/parsing-html-the-cthulhu-way/',
-          likes: null
+          likes: null,
         }
 
-        const loginResponse = await helper.login('testi-root','salaisuus')
+        const loginResponse = await helper.login('testi-root', 'salaisuus')
         const token = loginResponse.body.token
 
-
-        await api.post('/api/blogs')
+        await api
+          .post('/api/blogs')
           .auth(token, { type: 'bearer' }) // tässä pitää olla bearer pienellä
           .send(dummyBlog)
           .expect(201)
@@ -217,13 +224,14 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
             //title: "Parsing Html The Cthulhu Way",
             author: 'Jeff Atwood',
             url: 'https://blog.codinghorror.com/parsing-html-the-cthulhu-way/',
-            likes: 1234
+            likes: 1234,
           }
 
-          const loginResponse = await helper.login('testi-root','salaisuus')
+          const loginResponse = await helper.login('testi-root', 'salaisuus')
           const token = loginResponse.body.token
 
-          await api.post('/api/blogs')
+          await api
+            .post('/api/blogs')
             .auth(token, { type: 'bearer' }) // tässä pitää olla bearer pienellä
             .send(newBlog)
             .expect(400)
@@ -234,13 +242,14 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
             title: 'Parsing Html The Cthulhu Way',
             author: 'Jeff Atwood',
             //url: "https://blog.codinghorror.com/parsing-html-the-cthulhu-way/",
-            likes: 1234
+            likes: 1234,
           }
 
-          const loginResponse = await helper.login('testi-root','salaisuus')
+          const loginResponse = await helper.login('testi-root', 'salaisuus')
           const token = loginResponse.body.token
 
-          await api.post('/api/blogs')
+          await api
+            .post('/api/blogs')
             .auth(token, { type: 'bearer' }) // tässä pitää olla bearer pienellä
             .send(newBlog)
             .expect(400)
@@ -251,22 +260,21 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
             //title: "Parsing Html The Cthulhu Way",
             author: 'Jeff Atwood',
             //url: "https://blog.codinghorror.com/parsing-html-the-cthulhu-way/",
-            likes: 1234
+            likes: 1234,
           }
 
-          const loginResponse = await helper.login('testi-root','salaisuus')
+          const loginResponse = await helper.login('testi-root', 'salaisuus')
           const token = loginResponse.body.token
 
-          await api.post('/api/blogs')
+          await api
+            .post('/api/blogs')
             .auth(token, { type: 'bearer' }) // tässä pitää olla bearer pienellä
             .send(newBlog)
             .expect(400)
         })
       })
 
-
       describe('kun blogi on lisätty järjestelmään', () => {
-
         test('se on lisätty käyttäjän blogilistaan', async () => {
           const newBlog = await helper.addBlogWithUniqueTitle()
 
@@ -288,8 +296,6 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
     })
   })
 
-
-
   describe('blogin poisto id:llä', () => {
     describe('ilman kelvollista tokenia pyynnon mukana', () => {
       test('epäonnistuu ja vastauksena on statuskoodi 401 ja oikea virheilmoitus', async () => {
@@ -297,9 +303,10 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
         const blogsAtStart = await helper.blogsInDb()
         const blogToDelete = blogsAtStart.find(b => b.id === newBlogId)
 
-        uniqueTitle = blogToDelete.title
+        // uniqueTitle = blogToDelete.title
 
-        const result = await api.delete(`/api/blogs/${blogToDelete.id}`)
+        const result = await api
+          .delete(`/api/blogs/${blogToDelete.id}`)
           .expect(401) // Bad Request
 
         expect(result.body.error).toContain('token missing or invalid')
@@ -309,11 +316,10 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
       })
 
       test('palauttaa myös 401, jos id:tä ei löydy tietokannasta', async () => {
-        const blogs = await helper.blogsInDb()
+        // const blogs = await helper.blogsInDb()
         const dummyId = 'dummyId-1234'
 
-        const result = await api.delete(`/api/blogs/${dummyId}`)
-          .expect(401)
+        await api.delete(`/api/blogs/${dummyId}`).expect(401)
       })
     })
 
@@ -323,15 +329,17 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         const targetBlogId = newBlog.body.id
 
-        const loginResponse = await helper.login('toinen-käyttäjä','salasana2')
+        const loginResponse = await helper.login('toinen-käyttäjä', 'salasana2')
         const token = loginResponse.body.token
 
-
-        const result = await api.delete(`/api/blogs/${targetBlogId}`)
+        const result = await api
+          .delete(`/api/blogs/${targetBlogId}`)
           .auth(token, { type: 'bearer' })
           .expect(401)
 
-        expect(result.body.error).toContain('User cannot delete blog added by other user')
+        expect(result.body.error).toContain(
+          'User cannot delete blog added by other user'
+        )
       })
 
       test('palauttaa 404 jos kyseistä blogia ei löydy tietokannasta', async () => {
@@ -339,7 +347,8 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         const targetBlogId = await helper.nonExistingBlogId()
 
-        const result = await api.delete(`/api/blogs/${targetBlogId}`)
+        await api
+          .delete(`/api/blogs/${targetBlogId}`)
           .auth(newBlog.token, { type: 'bearer' })
           .expect(404)
       })
@@ -349,7 +358,8 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         const targetBlogId = newBlog.body.id
 
-        await api.delete(`/api/blogs/${targetBlogId}`)
+        await api
+          .delete(`/api/blogs/${targetBlogId}`)
           .auth(newBlog.token, { type: 'bearer' })
           .expect(204)
       })
@@ -357,14 +367,17 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
       test('jos blogilla ei ole user kenttää, vastataan statuskoodin 500 ja annetaan oikea virheilmoitus', async () => {
         const newBlogId = await helper.addNewBlog()
 
-        const loginResponse = await helper.login('toinen-käyttäjä','salasana2')
+        const loginResponse = await helper.login('toinen-käyttäjä', 'salasana2')
         const token = loginResponse.body.token
 
-        const result = await api.delete(`/api/blogs/${newBlogId}`)
+        const result = await api
+          .delete(`/api/blogs/${newBlogId}`)
           .auth(token, { type: 'bearer' })
           .expect(500)
 
-        expect(result.body.error).toContain('Unable to finish the DELETE operation: missing user information from blog')
+        expect(result.body.error).toContain(
+          'Unable to finish the DELETE operation: missing user information from blog'
+        )
       })
     })
   })
@@ -378,15 +391,16 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
       likes = likes + 1
 
-      const result = await api.put(`/api/blogs/${firstBlog.id}`)
-        .send({ likes })
-        .expect(401)
+      await api.put(`/api/blogs/${firstBlog.id}`).send({ likes }).expect(401)
     })
 
     describe('ilman kelvollista kirjautumista/tokenia', () => {
       test('ei onnistu ja vastauksena on statuskoodi 401 ja oikea virheilmoitus', async () => {
         // kunnollisessa tokenissa on id eikä userId
-        mockToken = jwt.sign({ username: 'testi-root', userId: 'abcd' }, process.env.SECRET)
+        const mockToken = jwt.sign(
+          { username: 'testi-root', userId: 'abcd' },
+          process.env.SECRET
+        )
 
         const blogList = await helper.blogsInDb()
         const firstBlog = blogList[0]
@@ -394,8 +408,7 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         likes = likes + 1
 
-
-        const result = await api
+        await api
           .put(`/api/blogs/${firstBlog.id}`)
           .auth(mockToken, { type: 'bearer' }) // tässä pitää olla bearer pienellä
           .send({ likes })
@@ -415,20 +428,23 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
           const targetBlog = await Blog.findById(targetBlogId)
           let likes = targetBlog.likes
 
-          //console.log(likes)
-
           likes = likes + 1
 
-          const loginResponse = await helper.login('toinen-käyttäjä','salasana2')
+          const loginResponse = await helper.login(
+            'toinen-käyttäjä',
+            'salasana2'
+          )
           const token = loginResponse.body.token
 
-
-          const result = await api.put(`/api/blogs/${targetBlogId}`)
+          const result = await api
+            .put(`/api/blogs/${targetBlogId}`)
             .auth(token, { type: 'bearer' })
             .send({ likes })
             .expect(401)
 
-          expect(result.body.error).toContain('User cannot edit blog added by other user')
+          expect(result.body.error).toContain(
+            'User cannot edit blog added by other user'
+          )
         })
 
         test('onnistuu, jos käyttäjän tokenin id ei vastaa blogin käyttäjätietoa ja lähetetään koko blogin tiedot (200)', async () => {
@@ -439,17 +455,19 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
           const targetBlog = await Blog.findById(targetBlogId)
           let newLikes = targetBlog.likes
 
-          //console.log(likes)
-
           newLikes += 1
 
-          const loginResponse = await helper.login('toinen-käyttäjä','salasana2')
+          const loginResponse = await helper.login(
+            'toinen-käyttäjä',
+            'salasana2'
+          )
           const token = loginResponse.body.token
 
-          const { title,author,url, likes } = targetBlog
+          // eslint-disable-next-line no-unused-vars
+          const { title, author, url, likes } = targetBlog
 
-
-          const result = await api.put(`/api/blogs/${targetBlogId}`)
+          const result = await api
+            .put(`/api/blogs/${targetBlogId}`)
             .auth(token, { type: 'bearer' })
             .send({ title, author, url, likes: newLikes })
             .expect(200)
@@ -458,14 +476,13 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
         })
       })
 
-
-
       test('palauttaa 404 jos kyseistä blogia ei löydy tietokannasta', async () => {
         const newBlog = await helper.addBlogWithUniqueTitle()
 
         const targetBlogId = await helper.nonExistingBlogId()
 
-        const result = await api.put(`/api/blogs/${targetBlogId}`)
+        await api
+          .put(`/api/blogs/${targetBlogId}`)
           .auth(newBlog.token, { type: 'bearer' })
           .set({ likes: 1 })
           .expect(404)
@@ -483,14 +500,14 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         likes = likes + 1
 
-        const result = await api.put(`/api/blogs/${targetBlogId}`)
+        const result = await api
+          .put(`/api/blogs/${targetBlogId}`)
           .auth(newBlog.token, { type: 'bearer' })
           .send({ likes })
           .expect(200)
 
         //console.log(result.body)
         expect(result.body.likes).toBe(likesAtStart + 1)
-
       })
     })
 
@@ -507,7 +524,8 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         title = ''
 
-        await api.put(`/api/blogs/${targetBlogId}`)
+        await api
+          .put(`/api/blogs/${targetBlogId}`)
           .auth(newBlog.token, { type: 'bearer' })
           .send({ title })
           .expect(400)
@@ -530,7 +548,8 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         title = null
 
-        await api.put(`/api/blogs/${targetBlogId}`)
+        await api
+          .put(`/api/blogs/${targetBlogId}`)
           .auth(newBlog.token, { type: 'bearer' })
           .send({ title })
           .expect(400)
@@ -553,7 +572,8 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         url = ''
 
-        await api.put(`/api/blogs/${targetBlogId}`)
+        await api
+          .put(`/api/blogs/${targetBlogId}`)
           .auth(newBlog.token, { type: 'bearer' })
           .send({ url })
           .expect(400)
@@ -597,7 +617,8 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         likes = 'malicious-link'
 
-        await api.put(`/api/blogs/${targetBlogId}`)
+        await api
+          .put(`/api/blogs/${targetBlogId}`)
           .auth(newBlog.token, { type: 'bearer' })
           .send({ likes })
           .expect(400)
@@ -607,7 +628,6 @@ describe('Kun tietokannassa on vain alustusdataa', () => {
 
         expect(updatedTargetBlog.likes).toBe(originalLikes)
       })
-
     })
   })
 
