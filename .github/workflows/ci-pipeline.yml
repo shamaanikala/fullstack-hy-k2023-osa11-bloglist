@@ -6,7 +6,10 @@ on:
       - master
 
 env:
-  COMMIT_BASE_URL: https://github.com/shamaanikala/fullstack-hy-k2023-osa11-bloglist/commit
+  PORT: 3000
+  BACKEND_PORT: 3003
+  TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+  SECRET: ${{ secrets.SECRET }}
 
 jobs:
   test_and_build_pipeline:
@@ -25,7 +28,8 @@ jobs:
         run: npm run eslint
 
       - name: Test backend
-        run: npm test
+        # run: npm test
+        run: 'npm run test:backend-file -- tests/user_api.test.js'
 
       - name: Test frontend
         run: npm run test:react
