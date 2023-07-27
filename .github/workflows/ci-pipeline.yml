@@ -28,8 +28,9 @@ jobs:
         run: npm run eslint
 
       - name: Test backend
-        run: npm test # this step is succesful even if tests fail
-        shell: bash # trying to fix the false success with this
+        #run: npm test # this step is succesful even if tests fail
+        #shell: bash # trying to fix the false success with this, does not work
+        run: 'npm run test:backend-file -- tests/login_api.tsts.js' # failing test
 
       - name: Test frontend
         run: npm run test:react
