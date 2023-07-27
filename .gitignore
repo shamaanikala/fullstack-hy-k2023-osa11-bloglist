@@ -11,6 +11,7 @@
 /coverage
 
 # production
+# the build will be done on the GitHub or deployment server, so ignore this
 /build
 
 # misc
