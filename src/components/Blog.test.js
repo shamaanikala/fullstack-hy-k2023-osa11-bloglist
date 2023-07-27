@@ -7,13 +7,13 @@ import userEvent from '@testing-library/user-event'
 describe('kun blogista näytetään vain vähän tietoja', () => {
   test('blogista renderöidään title', () => {
     const blog = {
-      title: 'Testiblogi'
+      title: 'Testiblogi',
     }
 
     render(<Blog blog={blog} />)
 
     const element = screen.getByText('Testiblogi')
-    expect(element).toBeDefined()
+    expect(element).not.toBeDefined()
   })
 
   test('blogista ei renderöidä url', () => {
@@ -39,7 +39,7 @@ describe('kun blogin tietot näyttävää nappia on painettu', () => {
   const mockBlogUser = {
     username: 'testaaja',
     name: 'Testi Nimi',
-    id: '6436a10e40980f329f08b00e'
+    id: '6436a10e40980f329f08b00e',
   }
 
   const dummyBlog = {
@@ -50,14 +50,12 @@ describe('kun blogin tietot näyttävää nappia on painettu', () => {
     user: {
       username: 'testaaja',
       name: 'Testi Nimi',
-      id: '6436a10e40980f329f08b00e'
-    }
+      id: '6436a10e40980f329f08b00e',
+    },
   }
 
   beforeEach(async () => {
-    container = render(
-      <Blog blog={dummyBlog} user={mockBlogUser} />
-    ).container
+    container = render(<Blog blog={dummyBlog} user={mockBlogUser} />).container
 
     const user = userEvent.setup()
     const button = screen.getByText('view')
@@ -70,14 +68,16 @@ describe('kun blogin tietot näyttävää nappia on painettu', () => {
   })
 
   test('blogin url näytetään', async () => {
-    const url = screen.getByText('https://',{ exact: false })
+    const url = screen.getByText('https://', { exact: false })
 
-    expect(url).toHaveTextContent('https://blog.codinghorror.com/parsing-html-the-cthulhu-way/')
+    expect(url).toHaveTextContent(
+      'https://blog.codinghorror.com/parsing-html-the-cthulhu-way/'
+    )
   })
 
   test('blogin likejen määrä näytetään', async () => {
     // laitetaan exact: false, koska tuo löytyy välilyönnillä "likes "
-    const likes = await screen.findByText('likes',{ exact: false })
+    const likes = await screen.findByText('likes', { exact: false })
 
     expect(likes).toHaveTextContent('3')
   })
@@ -104,7 +104,7 @@ test('blogin otsikko toimii samoin kuin view/hide -nappula', async () => {
   const mockBlogUser = {
     username: 'testaaja',
     name: 'Testi Nimi',
-    id: '6436a10e40980f329f08b00e'
+    id: '6436a10e40980f329f08b00e',
   }
 
   const mockBlog = {
@@ -115,15 +115,16 @@ test('blogin otsikko toimii samoin kuin view/hide -nappula', async () => {
     user: {
       username: 'testaaja',
       name: 'Testi Nimi',
-      id: '6436a10e40980f329f08b00e'
-    }
+      id: '6436a10e40980f329f08b00e',
+    },
   }
 
   let { container } = render(<Blog blog={mockBlog} user={mockBlogUser} />)
-  const element = screen.getByText('Parsing Html The Cthulhu Way', { exact: false })
+  const element = screen.getByText('Parsing Html The Cthulhu Way', {
+    exact: false,
+  })
 
   expect(container.querySelector('.opened')).toBeNull()
-
 
   const user = userEvent.setup()
   await user.click(element)
@@ -132,7 +133,9 @@ test('blogin otsikko toimii samoin kuin view/hide -nappula', async () => {
   expect(container.querySelector('.opened')).not.toBeNull()
 
   // piilotetaan vielä
-  const openedElement = screen.getByText('Parsing Html The Cthulhu Way', { exact: false })
+  const openedElement = screen.getByText('Parsing Html The Cthulhu Way', {
+    exact: false,
+  })
   await user.click(openedElement)
 
   expect(container.querySelector('.opened')).toBeNull()
@@ -142,7 +145,7 @@ describe('kun blogin tiedot on avattu', () => {
   const mockBlogUser = {
     username: 'testaaja',
     name: 'Testi Nimi',
-    id: '6436a10e40980f329f08b00e'
+    id: '6436a10e40980f329f08b00e',
   }
 
   const mockBlog = {
@@ -153,8 +156,8 @@ describe('kun blogin tiedot on avattu', () => {
     user: {
       username: 'testaaja',
       name: 'Testi Nimi',
-      id: '6436a10e40980f329f08b00e'
-    }
+      id: '6436a10e40980f329f08b00e',
+    },
   }
 
   const likeBlog = jest.fn()
