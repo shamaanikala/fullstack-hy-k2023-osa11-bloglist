@@ -90,21 +90,23 @@ describe('jos POST-pyynnössä on kelvollinen token', () => {
       .expect('Content-Type', /application\/json/)
   })
 
-  test('voiko käyttää vanhaa omaa tokenia', async () => {
-    const user = { username: 'testi-root', password: 'salaisuus' }
-    const loginResponse = await helper.login(user.username, user.password)
-    const oldToken = loginResponse.body.token
+  // Tällä testillä voi testata vanhentuvaa tokenia.
+  // Tällä hetkellä kyseinen toiminnallisuus ei ole päällä
+  // test('voiko käyttää vanhaa omaa tokenia', async () => {
+  //   const user = { username: 'testi-root', password: 'salaisuus' }
+  //   const loginResponse = await helper.login(user.username, user.password)
+  //   const oldToken = loginResponse.body.token
 
-    // eslint-disable-next-line no-unused-vars
-    const newLoginResponse = await helper.login(user.username, user.password)
-    // eslint-disable-next-line no-unused-vars
-    const token = loginResponse.body.token
+  //   // eslint-disable-next-line no-unused-vars
+  //   const newLoginResponse = await helper.login(user.username, user.password)
+  //   // eslint-disable-next-line no-unused-vars
+  //   const token = loginResponse.body.token
 
-    await api
-      .post('/api/login/verify-token')
-      .auth(oldToken, { type: 'bearer' }) // tässä pitää olla bearer pienellä
-      .send({ username: user.username })
-      .expect(401)
-      .expect('Content-Type', /application\/json/)
-  })
+  //   await api
+  //     .post('/api/login/verify-token')
+  //     .auth(oldToken, { type: 'bearer' }) // tässä pitää olla bearer pienellä
+  //     .send({ username: user.username })
+  //     .expect(401)
+  //     .expect('Content-Type', /application\/json/)
+  // })
 })
