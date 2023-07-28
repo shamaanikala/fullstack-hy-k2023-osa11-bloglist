@@ -57,7 +57,8 @@ jobs:
           npm run build
 
       - name: Check failing step (push)
-        if: ${{ failure() && github.event_name == 'push' }}
+        # if: ${{ failure() && github.event_name == 'push' }}
+        if: failure()
         # run: echo Failing step ${{ env.STEP_INFO }}
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
@@ -67,12 +68,12 @@ jobs:
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
-      - name: Check failing step (pull request)
+      - name: Check failing step (pull request synchronize)
         if: ${{ failure() && github.event_name == 'pull_request' }}
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
           severity: error
-          description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} - :crying_cat_face:'
+          description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
           details: 'Pull Request opened with failed checks by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
