@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
 
 env:
   PORT: 3000
@@ -62,6 +65,7 @@ jobs:
 
   deploy_on_render:
     name: Deploys bloglist application on render.com
+    if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
     runs-on: ubuntu-22.04
     needs: [test_and_build_bloglist, e2e_tests_on_build]
     steps:
