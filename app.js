@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use('/version', (req, res) => {
-  res.send('0.0.2')
+  res.send('0.0.3')
 })
 
 app.use('/health', (req, res) => {
