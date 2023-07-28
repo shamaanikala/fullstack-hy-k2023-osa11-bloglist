@@ -47,7 +47,11 @@ jobs:
 
       - name: Check failing step
         if: failure()
-        run: echo Failed, steps ${{ toJson(steps) }}
+        env:
+          STEPS: ${{ toJson(steps) }}
+        run: |
+          echo Failed, steps
+          echo "$STEPS"
 
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
