@@ -62,7 +62,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
           severity: error
-          description: ${{ env.STEP_INFO }} failed
+          description: '${{ env.STEP_INFO }} failed - :crying_cat_face:'
           details: 'Broken commit: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
@@ -72,7 +72,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
           severity: error
-          description: ${{ env.STEP_INFO }} failed
+          description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} - :crying_cat_face:'
           details: 'Pull Request opened with failed checks by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
