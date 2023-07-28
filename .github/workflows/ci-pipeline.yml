@@ -74,7 +74,7 @@ jobs:
         with:
           severity: error
           description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
-          details: 'Pull Request opened with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.git_commits_url }}/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
+          details: 'Pull Request opened with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commits/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
@@ -84,7 +84,7 @@ jobs:
         with:
           severity: error
           description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
-          details: 'Pull Request synch with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.git_commits_url }}/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
+          details: 'Pull Request synch with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commits/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
