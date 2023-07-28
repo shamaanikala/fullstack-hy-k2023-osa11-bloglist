@@ -43,7 +43,8 @@ jobs:
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
     runs-on: ubuntu-22.04
-    needs: test_and_build_bloglist
+    # E2E tests will take some time, so let's run this parallel
+    # needs: test_and_build_bloglist
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -73,3 +74,20 @@ jobs:
         with:
           render-service-id: ${{ secrets.RENDER_SERVICE_ID }}
           render-api-key: ${{ secrets.RENDER_API_KEY }}
+
+  tag_release:
+    name: Bumb the version number (tag)
+    needs: [test_and_build_bloglist, e2e_tests_on_build, deploy_on_render]
+    if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: Bumb version and push tag
+        uses: anothrNick/github-tag-action@a2c70ae13a881faf2b4953baaa9e49731997ab36
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
