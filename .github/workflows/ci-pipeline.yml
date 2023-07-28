@@ -52,12 +52,30 @@ jobs:
 
       - name: Build
         id: build
-        run: npm run build
-
-      - name: Check failing step
-        if: failure()
         run: |
-          echo ${{ env.STEP_INFO }}
+          echo "STEP_INFO='Build'" >> "$GITHUB_ENV"
+          npm run build
+
+      - name: Check failing step (push)
+        if: ${{ failure() && github.event_name == 'push' }}
+        # run: echo Failing step ${{ env.STEP_INFO }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: ${{ env.STEP_INFO }} failed
+          details: 'Broken commit: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
+          text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+
+      - name: Check failing step (pull request)
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: ${{ env.STEP_INFO }} failed
+          details: 'Pull Request opened with failed checks by ${{ github.actor }}'
+          text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
