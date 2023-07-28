@@ -26,23 +26,28 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
+        id: install_dependencies
         run: npm install
 
       - name: Test backend
+        id: test_backend
         run: npm test
 
       - name: Test frontend
+        id: test_frontend
         run: npm run test:react
 
       - name: Check style
+        id: check_style
         run: npm run eslint
 
       - name: Build
+        id: build
         run: npm run build
 
       - name: Check failing step
         if: failure()
-        run: echo Failed, steps ${{ steps }}
+        run: echo Failed, steps ${{ toJson(steps) }}
 
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
