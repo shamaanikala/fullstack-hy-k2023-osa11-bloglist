@@ -49,6 +49,14 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
+app.use('/version', (req, res) => {
+  res.send('0.0.1')
+})
+
+app.use('/health', (req, res) => {
+  res.send('ok')
+})
+
 app.use(middleware.errorHandler)
 
 module.exports = app
