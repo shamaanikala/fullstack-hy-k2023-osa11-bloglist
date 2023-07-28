@@ -59,3 +59,13 @@ jobs:
           command: 'npm run test:e2e'
           start: 'npm run start:test-build'
           wait-on: http://localhost:3003
+
+  deploy_on_render:
+    name: Deploys bloglist application on render.com
+    runs-on: ubuntu-22.04
+    needs: [test_and_build_bloglist, e2e_tests_on_build]
+    steps:
+      - uses: shamaanikala/use-render-deploy@v1-alpha
+        with:
+          render-service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          render-api-key: ${{ secrets.RENDER_API_KEY }}
