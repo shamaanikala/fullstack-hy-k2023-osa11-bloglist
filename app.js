@@ -54,8 +54,6 @@ app.use('/version', (req, res) => {
 })
 
 app.use('/health', (req, res) => {
-  throw 'error...'
-  // eslint-disable-next-line no-unreachable
   res.send('ok')
 })
 
