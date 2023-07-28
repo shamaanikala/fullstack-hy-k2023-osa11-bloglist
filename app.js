@@ -50,10 +50,12 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use('/version', (req, res) => {
-  res.send('0.0.1')
+  res.send('0.0.2')
 })
 
 app.use('/health', (req, res) => {
+  throw 'error...'
+  // eslint-disable-next-line no-unreachable
   res.send('ok')
 })
 
