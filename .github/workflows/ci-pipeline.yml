@@ -13,6 +13,7 @@ env:
   BACKEND_PORT: 3003
   TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
   SECRET: ${{ secrets.SECRET }}
+  STEP_INFO: ''
 
 jobs:
   test_and_build_bloglist:
@@ -27,19 +28,27 @@ jobs:
 
       - name: Install dependencies
         id: install_dependencies
-        run: npm install
+        run: |
+          echo "STEP_INFO='Install dependencies'" >> "$GITHUB_ENV"
+          npm install
 
       - name: Test backend
         id: test_backend
-        run: npm test
+        run: |
+          echo "STEP_INFO='Test backend'" >> "$GITHUB_ENV"
+          npm test
 
       - name: Test frontend
         id: test_frontend
-        run: npm run test:react
+        run: |
+          echo "STEP_INFO='Test frontend'" >> "$GITHUB_ENV"
+          npm run test:react
 
       - name: Check style
         id: check_style
-        run: npm run eslint
+        run: |
+          echo "STEP_INFO='Check style'" >> "$GITHUB_ENV"
+          npm run eslint
 
       - name: Build
         id: build
@@ -47,11 +56,8 @@ jobs:
 
       - name: Check failing step
         if: failure()
-        env:
-          STEPS: ${{ toJson(steps) }}
         run: |
-          echo Failed, steps
-          echo "$STEPS"
+          echo ${{ env.STEP_INFO }}
 
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
