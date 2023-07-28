@@ -4,17 +4,22 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
 const requestLogger = (request, response, next) => {
-  logger.info('Method:', request.method)
-  logger.info('Path:  ', request.path)
-  if (process.env.NODE_ENV === 'production' && request.body.password) {
-    const loggedBody = { ...request.body, password: '********' }
-    logger.info('Body   ', loggedBody)
+  // prevent the render.com /health spam in logs
+  if (process.env.NODE_ENV === 'production' && request.path === '/health') {
+    next()
   } else {
-    logger.info('Body   ', request.body)
+    logger.info('Method:', request.method)
+    logger.info('Path:  ', request.path)
+    if (process.env.NODE_ENV === 'production' && request.body.password) {
+      const loggedBody = { ...request.body, password: '********' }
+      logger.info('Body   ', loggedBody)
+    } else {
+      logger.info('Body   ', request.body)
+    }
+    logger.info(Date())
+    logger.info('---')
+    next()
   }
-  logger.info(Date())
-  logger.info('---')
-  next()
 }
 
 // const unknownEndpoint = (request, response) => {
