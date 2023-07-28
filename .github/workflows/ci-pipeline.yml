@@ -43,8 +43,7 @@ jobs:
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
     runs-on: ubuntu-22.04
-    # E2E tests will take some time, so let's run this parallel
-    # needs: test_and_build_bloglist
+    needs: test_and_build_bloglist
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
