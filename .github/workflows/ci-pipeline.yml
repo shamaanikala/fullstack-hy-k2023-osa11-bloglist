@@ -64,7 +64,7 @@ jobs:
         with:
           severity: error
           description: '${{ env.STEP_INFO }} failed - :crying_cat_face:'
-          details: 'Broken commit: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
+          details: 'Broken commit: ${{ github.event.head_commit.url }} ${{ github.event_name }} ${{ github.event.action }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
