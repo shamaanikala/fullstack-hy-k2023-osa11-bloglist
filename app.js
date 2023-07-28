@@ -53,6 +53,8 @@ app.use('/version', (req, res) => {
   res.send('0.0.4')
 })
 
+const failLinting = true
+
 app.use('/health', (req, res) => {
   res.send('ok')
 })

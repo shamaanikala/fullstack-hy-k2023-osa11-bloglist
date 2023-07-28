@@ -40,6 +40,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check failing step
+        if: failure()
+        run: echo Failed, steps ${{ steps }}
+
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
     runs-on: ubuntu-22.04
