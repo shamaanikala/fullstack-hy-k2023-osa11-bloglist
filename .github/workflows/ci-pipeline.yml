@@ -73,6 +73,15 @@ jobs:
         with:
           render-service-id: ${{ secrets.RENDER_SERVICE_ID }}
           render-api-key: ${{ secrets.RENDER_API_KEY }}
+      - name: Notify deploy action succesful (own dev discord)
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: info
+          description: 'Deploying new version of Bloglist :rocket: '
+          details: 'to: ${{ vars.RENDER_DEPLOYED_URL }}'
+          text: Deploying new version of Bloglist to render.com...
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
   tag_release:
     name: Bumb the version number (tag)
