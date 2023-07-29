@@ -62,7 +62,7 @@ jobs:
         with:
           severity: error
           description: '__*${{ env.STEP_INFO }} failed*__ - :crying_cat_face:'
-          details: '***Broken commit***: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
+          details: '***Broken commit***: ${{ github.event.head_commit.url }} by _${{ github.actor }}_'
           text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
@@ -85,6 +85,27 @@ jobs:
           details: '***Pull Request synch with failed checks!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
           text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+
+      # course discord notifications
+      - name: Notify course discord on error (push)
+        if: ${{ failure() && github.event_name == 'push' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__ - :crying_cat_face:'
+          details: '***Broken commit***: ${{ github.event.head_commit.url }} by _${{ github.actor }}_'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Notify course discord on error (pull_request)
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          details: '***Workflow failed!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
@@ -141,6 +162,26 @@ jobs:
           details: '***Pull Request synch with failed checks!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
           text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+      # course discord notifications
+      - name: Notify course discord on error (push)
+        if: ${{ failure() && github.event_name == 'push' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__ - :crying_cat_face:'
+          details: '***Broken commit***: ${{ github.event.head_commit.url }} by _${{ github.actor }}_'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Notify course discord on error (pull_request)
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          details: '***Workflow failed!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
   deploy_on_render:
     name: Deploys bloglist application on render.com
@@ -161,6 +202,15 @@ jobs:
           details: 'to: ${{ vars.RENDER_DEPLOYED_URL }}'
           text: Deploying new version of Bloglist to render.com...
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+      - name: Notify deploy action succesful (course discord)
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: info
+          description: 'Deploying new version of Bloglist :rocket: '
+          details: 'to: ${{ vars.RENDER_DEPLOYED_URL }}'
+          text: Deploying new version of Bloglist to render.com...
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
   tag_release:
     name: Bumb the version number (tag)
