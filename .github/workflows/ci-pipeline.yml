@@ -29,19 +29,19 @@ jobs:
       - name: Install dependencies
         id: install_dependencies
         run: |
-          echo "STEP_INFO='Install dependencies'" >> "$GITHUB_ENV"
+          echo "STEP_INFO=Install dependencies" >> "$GITHUB_ENV"
           npm install
 
       - name: Test backend
         id: test_backend
         run: |
-          echo "STEP_INFO='Test backend'" >> "$GITHUB_ENV"
+          echo "STEP_INFO=Test backend" >> "$GITHUB_ENV"
           npm test
 
       - name: Test frontend
         id: test_frontend
         run: |
-          echo "STEP_INFO='Test frontend'" >> "$GITHUB_ENV"
+          echo "STEP_INFO=Test frontend" >> "$GITHUB_ENV"
           npm run test:react
 
       - name: Check style
@@ -53,7 +53,7 @@ jobs:
       - name: Build
         id: build
         run: |
-          echo "STEP_INFO='Build'" >> "$GITHUB_ENV"
+          echo "STEP_INFO=Build" >> "$GITHUB_ENV"
           npm run build
 
       - name: Check failing step (push)
@@ -61,8 +61,8 @@ jobs:
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
           severity: error
-          description: '${{ env.STEP_INFO }} failed - :crying_cat_face:'
-          details: 'Broken commit: ${{ github.event.head_commit.url }} ${{ github.event_name }} ${{ github.event.action }} by ${{ github.actor }}'
+          description: '_${{ env.STEP_INFO }} failed_ - :crying_cat_face:'
+          details: 'Broken commit: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
@@ -71,7 +71,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
           severity: error
-          description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          description: '${{ env.STEP_INFO }} failed: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
           details: 'Pull Request opened with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
@@ -81,8 +81,8 @@ jobs:
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
           severity: error
-          description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
-          details: 'Pull Request synch with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
+          description: '__*${{ env.STEP_INFO }} failed*__: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          details: 'Pull Request synch with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
@@ -118,7 +118,7 @@ jobs:
         with:
           severity: error
           description: '${{ env.STEP_INFO }} failed - :crying_cat_face:'
-          details: 'Broken commit: ${{ github.event.head_commit.url }} ${{ github.event_name }} ${{ github.event.action }} by ${{ github.actor }}'
+          details: 'Broken commit: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
@@ -127,7 +127,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
           severity: error
-          description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          description: '${{ env.STEP_INFO }} failed: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
           details: 'Pull Request opened with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
@@ -137,7 +137,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
         with:
           severity: error
-          description: '${{ env.STEP_INFO }} failed ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          description: '${{ env.STEP_INFO }} failed: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
           details: 'Pull Request synch with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
           text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
