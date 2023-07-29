@@ -1,0 +1,35 @@
+name: Ping Bloglist Health Check
+
+on:
+  schedule:
+    - cron: '10 13 * * *'
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running scheduled health check on Bloglist application"
+      - name: Ping the deployed Bloglist health check url
+        uses: jtalk/url-health-check-action@f3f7bd79e4a64218eea7caad72796a1443896aeb
+        with:
+          url: ${{ vars.RENDER_DEPLOYED_URL }}/health
+          max-attempts: 5
+          retry-delay: 15s
+      - name: Notify succesfull build and test action
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: info
+          description: ':watch: Scheduled Health check passed! :white_check_mark: '
+          details: 'Deployed web service is up and running'
+          text: '${{ github.event.repository.full_name }}: Health check'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+      - name: Notify failed build and test action
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: ':watch: Scheduled Health check failed! :x: '
+          details: 'Deployed web service does not seem to be online!'
+          text: '${{ github.event.repository.full_name }}: Health check'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
