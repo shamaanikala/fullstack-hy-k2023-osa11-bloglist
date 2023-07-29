@@ -63,7 +63,7 @@ jobs:
           severity: error
           description: '_${{ env.STEP_INFO }} failed_ - :crying_cat_face:'
           details: 'Broken commit: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
-          text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          text: '## ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
       - name: Check failing step (pull request opened)
@@ -73,7 +73,7 @@ jobs:
           severity: error
           description: '${{ env.STEP_INFO }} failed: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
           details: 'Pull Request opened with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
-          text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          text: '## ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
       - name: Check failing step (pull request synchronize)
@@ -82,8 +82,8 @@ jobs:
         with:
           severity: error
           description: '__*${{ env.STEP_INFO }} failed*__: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
-          details: 'Pull Request synch with failed checks! Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
-          text: '${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          details: '***Pull Request synch with failed checks!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
+          text: '## ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
           webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
   e2e_tests_on_build:
