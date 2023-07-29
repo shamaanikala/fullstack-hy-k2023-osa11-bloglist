@@ -50,8 +50,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use('/version', (req, res) => {
-  res.send('0.0.4')
+  res.send('0.0.5')
 })
+
+// const failLinting = true
 
 app.use('/health', (req, res) => {
   res.send('ok')

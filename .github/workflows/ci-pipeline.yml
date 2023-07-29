@@ -13,6 +13,7 @@ env:
   BACKEND_PORT: 3003
   TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
   SECRET: ${{ secrets.SECRET }}
+  STEP_INFO: ''
 
 jobs:
   test_and_build_bloglist:
@@ -26,19 +27,64 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        id: install_dependencies
+        run: |
+          echo "STEP_INFO=Install dependencies" >> "$GITHUB_ENV"
+          npm install
 
       - name: Test backend
-        run: npm test
+        id: test_backend
+        run: |
+          echo "STEP_INFO=Test backend" >> "$GITHUB_ENV"
+          npm test
 
       - name: Test frontend
-        run: npm run test:react
+        id: test_frontend
+        run: |
+          echo "STEP_INFO=Test frontend" >> "$GITHUB_ENV"
+          npm run test:react
 
       - name: Check style
-        run: npm run eslint
+        id: check_style
+        run: |
+          echo "STEP_INFO=Check style" >> "$GITHUB_ENV"
+          npm run eslint
 
       - name: Build
-        run: npm run build
+        id: build
+        run: |
+          echo "STEP_INFO=Build" >> "$GITHUB_ENV"
+          npm run build
+
+      - name: Check failing step (push)
+        if: ${{ failure() && github.event_name == 'push' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__ - :crying_cat_face:'
+          details: '***Broken commit***: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+
+      - name: Check failing step (pull request opened)
+        if: ${{ failure() && github.event_name == 'pull_request' && github.event.action == 'opened' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          details: '***Pull Request opened with failed checks!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+
+      - name: Check failing step (pull request synchronize)
+        if: ${{ failure() && github.event_name == 'pull_request' && github.event.action == 'synchronize' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          details: '***Pull Request synch with failed checks!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
   e2e_tests_on_build:
     name: Builds and runs E2E tests on Bloglist application
@@ -56,12 +102,45 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Write env variable for error notification
+        run: echo "STEP_INFO=E2E tests with Cypress" >> "$GITHUB_ENV"
+
       - name: E2E tests with Cypress
         uses: cypress-io/github-action@v5
         with:
           command: 'npm run test:e2e'
           start: 'npm run start:test-build'
           wait-on: http://localhost:3003
+
+      - name: Check failing step (push)
+        if: ${{ failure() && github.event_name == 'push' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__ - :crying_cat_face:'
+          details: '***Broken commit***: ${{ github.event.head_commit.url }} by ${{ github.actor }}'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+
+      - name: Check failing step (pull request opened)
+        if: ${{ failure() && github.event_name == 'pull_request' && github.event.action == 'opened' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          details: '***Pull Request opened with failed checks!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by ${{ github.actor }}'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
+
+      - name: Check failing step (pull request synchronize)
+        if: ${{ failure() && github.event_name == 'pull_request' && github.event.action == 'synchronize' }}
+        uses: rjstone/discord-webhook-notify@89b0bf43c2c8514f70d0dcba4a706b904e8a3112
+        with:
+          severity: error
+          description: '__*${{ env.STEP_INFO }} failed*__: event info: ${{ github.event_name }} ${{ github.event.action }} - :crying_cat_face:'
+          details: '***Pull Request synch with failed checks!*** Broken commit: ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by _${{ github.actor }}_'
+          text: '### ${{ github.event.repository.full_name }}: ${{ env.STEP_INFO }} failed'
+          webhookUrl: ${{ secrets.OMA_DISCORD_WEBHOOK }}
 
   deploy_on_render:
     name: Deploys bloglist application on render.com
