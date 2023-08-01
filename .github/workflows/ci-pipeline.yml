@@ -30,7 +30,7 @@ jobs:
         id: install_dependencies
         run: |
           echo "STEP_INFO=Install dependencies" >> "$GITHUB_ENV"
-          npm install
+          npm ci
 
       - name: Test backend
         id: test_backend
@@ -118,7 +118,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: npm run build
